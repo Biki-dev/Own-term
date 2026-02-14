@@ -16,16 +16,17 @@
     "url": "https://github.com/Biki-dev/own-term"
   },
   "bin": {
-    "own-term": "./bin/index.js",
-    "termfolio": "./bin/index.js"
+    "own-term": "./bin/cli.js",
+    "termfolio": "./bin/cli.js"
   },
-  "main": "./bin/index.js",
+  "main": "./bin/cli.js",
   "files": [
     "bin",
     "templates"
   ],
   "scripts": {
     "build": "tsc",
+    "postbuild": "chmod +x bin/cli.js || echo \"Skipping chmod on Windows\"",
     "dev": "ts-node src/cli.ts",
     "test": "vitest",
     "lint": "eslint src --ext .ts",
