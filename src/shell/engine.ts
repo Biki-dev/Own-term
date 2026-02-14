@@ -25,6 +25,7 @@ export class ShellEngine {
             theme,
         };
 
+        this.context.render.setTypewriterMode(true);
         this.router = new Router(this.context);
     }
 

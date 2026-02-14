@@ -44,10 +44,7 @@ export function registerCoreCommands(
         context.render.header(config.name, config.title);
 
         if (config.about) {
-            context.render.box(config.about, {
-                title: "About Me",
-                borderColor: context.theme.primary,
-            });
+            await context.render.textAnimated(config.about, { color: context.theme.text });
         } else {
             context.render.warning("No about information provided in config");
         }
@@ -209,6 +206,6 @@ export async function showWelcome(config: TermfolioConfig, context: CommandConte
     );
 
     context.render.newline();
-    context.render.text("Type 'help' to see available commands", { color: context.theme.dim });
+    await context.render.textAnimated("Type 'help' to see available commands", { color: context.theme.dim });
     context.render.newline();
 }

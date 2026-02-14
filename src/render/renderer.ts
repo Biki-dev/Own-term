@@ -3,9 +3,19 @@ import boxen from "boxen";
 import Table from "cli-table3";
 import gradient from "gradient-string";
 import { RenderAPI, BoxOptions, TextStyle, Theme } from "../types";
+import { typewriter } from "./effects";
 
 export class Renderer implements RenderAPI {
+    private typewriterMode: boolean = false;
+
     constructor(private theme: Theme) { }
+
+    /**
+     * Enable or disable typewriter effect globally for animated text
+     */
+    setTypewriterMode(enabled: boolean): void {
+        this.typewriterMode = enabled;
+    }
 
     /**
      * Render content in a box
@@ -158,5 +168,20 @@ export class Renderer implements RenderAPI {
      */
     info(message: string): void {
         console.log(chalk.hex(this.theme.primary)("ℹ " + message));
+    }
+
+    /**
+     * Render styled text with an optional typewriter effect
+     */
+    async textAnimated(content: string, style: TextStyle = {}): Promise<void> {
+        if (this.typewriterMode) {
+            await typewriter(content, {
+                color: style.color,
+                bold: style.bold,
+                newline: true
+            });
+        } else {
+            this.text(content, style);
+        }
     }
 }

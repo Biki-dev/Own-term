@@ -63,6 +63,8 @@ export interface RenderAPI {
     warning: (message: string) => void;
     error: (message: string) => void;
     info: (message: string) => void;
+    textAnimated: (content: string, style?: TextStyle) => Promise<void>;
+    setTypewriterMode: (enabled: boolean) => void;
 }
 
 export interface BoxOptions {
