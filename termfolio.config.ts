@@ -20,9 +20,13 @@ export default {
         }
     ],
     skills: {
-        languages: ["TypeScript", "JavaScript", "Python", "Go"],
-        frameworks: ["Node.js", "React", "Next.js", "Express"],
-        tools: ["Git", "Docker", "VS Code", "Linux"],
-        databases: ["PostgreSQL", "MongoDB", "Redis"]
-    }
+  languages: [
+    { name: "TypeScript", level: 92 },
+    { name: "JavaScript", level: 95 },
+    { name: "Python",     level: 80 },
+    { name: "Go",         level: 55 },
+  ],
+  // plain strings still work for other categories:
+  tools: ["Git", "Docker", "Linux"],
+}
 };

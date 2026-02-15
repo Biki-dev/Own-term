@@ -4,133 +4,103 @@ import { TermfolioConfig, CommandContext } from "../types";
 import { Router } from "./router";
 import { Renderer } from "../render/renderer";
 import { getTheme } from "../themes/default";
-import { registerCoreCommands, showWelcome } from "../commands";
+import { registerCoreCommands } from "../commands";
 import { loadPlugins } from "../plugins/loader";
+import { showWelcome, runBootSequence } from "./welcome";
 
-/**
- * Interactive shell engine
- */
 export class ShellEngine {
-    private router: Router;
-    private context: CommandContext;
-    private running: boolean = false;
+  private router: Router;
+  private context: CommandContext;
+  private running = false;
 
-    constructor(private config: TermfolioConfig) {
-        const theme = getTheme(config.theme);
-        const renderer = new Renderer(theme);
+  constructor(private config: TermfolioConfig) {
+    const theme = getTheme(config.theme);
+    const renderer = new Renderer(theme);
 
-        this.context = {
-            config,
-            render: renderer,
-            theme,
-        };
+    this.context = {
+      config,
+      render: renderer,
+      theme,
+    };
 
-        this.context.render.setTypewriterMode(true);
-        this.router = new Router(this.context);
+    this.context.render.setTypewriterMode(true);
+    this.router = new Router(this.context);
+  }
+
+  async init(): Promise<void> {
+    const coreCommands = registerCoreCommands(this.config, this.context);
+    this.router.registerAll(coreCommands);
+
+    if (this.config.customCommands) {
+      this.router.registerAll(this.config.customCommands);
     }
 
-    /**
-     * Initialize the shell
-     */
-    async init(): Promise<void> {
-        // Register core commands
-        const coreCommands = registerCoreCommands(this.config, this.context);
-        this.router.registerAll(coreCommands);
+    if (this.config.plugins && this.config.plugins.length > 0) {
+      await loadPlugins(this.config.plugins, this.context, this.router);
+    }
+  }
 
-        // Register custom commands from config
-        if (this.config.customCommands) {
-            this.router.registerAll(this.config.customCommands);
-        }
+  async start(): Promise<void> {
+    this.running = true;
 
-        // Load and register plugins
-        if (this.config.plugins && this.config.plugins.length > 0) {
-            await loadPlugins(this.config.plugins, this.context, this.router);
-        }
+    // Boot sequence → then welcome
+    const noAnim = process.argv.includes("--no-animation") || !process.stdout.isTTY;
+    if (!noAnim) {
+      await runBootSequence(this.context);
     }
 
-    /**
-     * Start the interactive shell
-     */
-    async start(): Promise<void> {
-        this.running = true;
+    await showWelcome(this.config, this.context);
 
-        // Show welcome screen
-        await showWelcome(this.config, this.context);
-
-        // Main input loop
-        while (this.running) {
-            try {
-                const { command } = await inquirer.prompt([
-                    {
-                        type: "input",
-                        name: "command",
-                        message: this.getPrompt(),
-                        prefix: "",
-                    },
-                ]);
-
-                const shouldContinue = await this.router.execute(command);
-                if (!shouldContinue) {
-                    this.stop();
-                }
-            } catch (error) {
-                if ((error as any).isTtyError) {
-                    console.error("Prompt couldn't be rendered in the current environment");
-                    this.stop();
-                } else {
-                    console.error("An error occurred:", error);
-                }
-            }
-        }
-
-        this.exit();
-    }
-
-    /**
-     * Get the command prompt
-     */
-    private getPrompt(): string {
-        const promptSymbol = chalk.hex(this.context.theme.primary)("❯");
-        return promptSymbol;
-    }
-
-    /**
-     * Stop the shell
-     */
-    stop(): void {
-        this.running = false;
-    }
-
-    /**
-     * Exit the shell with goodbye message
-     */
-    private exit(): void {
-        this.context.render.newline();
-        this.context.render.gradient("Thanks for visiting! 👋", [
-            this.context.theme.primary,
-            this.context.theme.secondary,
+    while (this.running) {
+      try {
+        const { command } = await inquirer.prompt([
+          {
+            type: "input",
+            name: "command",
+            message: this.getPrompt(),
+            prefix: "",
+          },
         ]);
-        this.context.render.newline();
-        process.exit(0);
+
+        const shouldContinue = await this.router.execute(command);
+        if (!shouldContinue) this.stop();
+      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((error as any).isTtyError) {
+          this.stop();
+        } else {
+          console.error("An error occurred:", error);
+        }
+      }
     }
 
-    /**
-     * Handle process signals
-     */
-    setupSignalHandlers(): void {
-        process.on("SIGINT", () => {
-            this.context.render.newline();
-            this.stop();
-        });
+    this.exit();
+  }
 
-        process.on("SIGTERM", () => {
-            this.stop();
-        });
+  private getPrompt(): string {
+    return chalk.hex(this.context.theme.primary).bold("❯ ");
+  }
 
-        // Restore terminal on exit
-        process.on("exit", () => {
-            // Reset terminal state
-            process.stdout.write("\x1b[0m"); // Reset colors
-        });
-    }
+  stop(): void {
+    this.running = false;
+  }
+
+  private exit(): void {
+    this.context.render.newline();
+    const g = require("gradient-string");
+    console.log(g(this.context.theme.primary, this.context.theme.secondary)("Thanks for visiting! 👋"));
+    this.context.render.newline();
+    process.exit(0);
+  }
+
+  setupSignalHandlers(): void {
+    process.on("SIGINT", () => {
+      this.context.render.newline();
+      this.stop();
+    });
+    process.on("SIGTERM", () => this.stop());
+    process.on("exit", () => {
+      process.stdout.write("\x1b[0m");
+    });
+  }
 }
