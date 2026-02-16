@@ -69,8 +69,8 @@ function getDefaultConfig(): TermfolioConfig {
         about: "A beautiful, interactive terminal portfolio framework. Create your own with 'npx create-own-term'!",
         theme: "dark",
         links: {
-            github: "https://github.com/yourusername/own-term",
-            email: "hello@example.com",
+            github: "https://github.com/Biki-dev/own-term",
+            email:  "Bikikalitadev@gmail.com",
         },
         projects: [
             {
