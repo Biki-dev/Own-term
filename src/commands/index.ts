@@ -151,7 +151,11 @@ export function registerCoreCommands(
 
     // Interest tags
     if (config.skills) {
-      const allTech = Object.values(config.skills).flat().filter(Boolean).slice(0, 8) as string[];
+      const allTech = Object.values(config.skills)
+        .flat()
+        .filter(Boolean)
+        .map((item) => (typeof item === "object" && item !== null && "name" in item ? (item as { name: string }).name : String(item)))
+        .slice(0, 8);
       if (allTech.length > 0) {
         const tags = allTech
           .map((t) => chalk.bgHex("#0a1a2a").hex(theme.primary)(` ${t} `))
