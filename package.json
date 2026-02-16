@@ -7,9 +7,19 @@
     "portfolio",
     "cli",
     "interactive",
-    "developer-tools"
+    "developer-tools",
+    "portfolio-generator",
+    "terminal-portfolio",
+    "developer-portfolio",
+    "npx",
+    "framework",
+    "ascii",
+    "typescript",
+    "resume",
+    "themes",
+    "plugins"
   ],
-  "author": "",
+  "author": "Biki Dev <Bikikalitadev@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
