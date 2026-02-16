@@ -32,14 +32,18 @@ export interface Project {
     status?: "active" | "archived" | "wip";
 }
 
-export interface Skills {
-    languages?: string[];
-    frameworks?: string[];
-    tools?: string[];
-    databases?: string[];
-    [category: string]: string[] | undefined;
+export interface SkillItem {
+  name: string;
+  level?: number;  // 0-100
 }
 
+export interface Skills {
+  languages?: (string | SkillItem)[];
+  frameworks?: (string | SkillItem)[];
+  tools?: (string | SkillItem)[];
+  databases?: (string | SkillItem)[];
+  [category: string]: (string | SkillItem)[] | undefined;
+}
 export type CommandHandler = (args: string[], context: CommandContext) => Promise<void> | void;
 
 export interface CommandContext {
