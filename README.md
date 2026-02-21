@@ -7,7 +7,7 @@
 **Create a beautiful, interactive terminal portfolio — installable via `npx` or `npm i -g`**
 
 [![npm version](https://badge.fury.io/js/own-term.svg)](https://www.npmjs.com/package/own-term)
-[![CI](https://github.com/yourusername/own-term/workflows/CI/badge.svg)](https://github.com/yourusername/own-term/actions)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
