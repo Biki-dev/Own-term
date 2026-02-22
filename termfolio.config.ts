@@ -35,5 +35,6 @@ export default {
   ],
   // plain strings still work for other categories:
   tools: ["Git", "Docker", "Linux"],
-}
+},
+resume: "https://yourwebsite.com/resume.pdf"
 };
