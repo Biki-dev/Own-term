@@ -17,6 +17,13 @@ export default {
             repo: "https://github.com/Biki-dev/own-term",
             tags: ["cli", "node", "typescript", "framework"],
             status: "active"
+        },
+        {
+            name: "Contrib-Aura-Farming",
+            desc: "A React-based web application that generates beautiful screenshots of your GitHub contributions.",
+            repo: "https://github.com/Biki-dev/Contrib-Aura-Farming",
+            tags: ["html", "javascript", "css"],
+            status: "active"
         }
     ],
     skills: {
