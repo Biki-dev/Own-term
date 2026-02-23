@@ -45,6 +45,7 @@ function validateConfig(config: Partial<TermfolioConfig>): TermfolioConfig {
 
     return {
         name: config.name,
+        promptStyle: config.promptStyle || "dashboard", 
         title: config.title || "Developer",
         asciiLogo: config.asciiLogo,
         about: config.about,
@@ -66,6 +67,7 @@ function getDefaultConfig(): TermfolioConfig {
         name: "Own-term",
         title: "Terminal Portfolio Framework",
         asciiLogo: "OWN-TERM",
+        promptStyle: "dashboard",
         about: "A beautiful, interactive terminal portfolio framework. Create your own with 'npx create-own-term'!",
         theme: "dark",
         links: {

@@ -8,6 +8,7 @@ export interface TermfolioConfig {
     asciiLogo?: string;
     about?: string;
     theme?: string;
+    promptStyle?: string;
     links: {
         github?: string;
         linkedin?: string;

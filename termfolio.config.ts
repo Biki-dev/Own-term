@@ -3,6 +3,7 @@ export default {
     title: "Terminal Portfolio Framework",
     asciiLogo: "OWN-TERM",
     about: "Welcome to Own-term! This is a powerful framework for creating beautiful, interactive terminal portfolios. Try the commands below to explore the features!",
+    promptStyle: "dashboard",  // ← Choose: git | time | dashboard | minimal | cyberpunk
     theme: "dark",
     links: {
         github: "https://github.com/Biki-dev/own-term",
