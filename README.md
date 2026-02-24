@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Own-term Banner](https://via.placeholder.com/800x200/00D9FF/FFFFFF?text=Own-term)
+![Own-term Banner](./src/assets/banner.png)
 
 **Create a beautiful, interactive terminal portfolio — installable via `npx` or `npm i -g`**
 
