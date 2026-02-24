@@ -13,13 +13,18 @@ function termWidth(): number {
 
 
 const LOGO_RAW = [
-  "  ╔══════╦════════════════╗  ",
-  "  ║  ░░  ╠══════════════╗ ║  ",
-  "  ║  ░░  ╠═════╗  ░░░░  ║ ║  ",
-  "  ║  ░░  ║     ║  ░░░░  ║ ║  ",
-  "  ║  ░░  ║     ╠══════════╣  ",
-  "  ║  ░░  ║     ║  ░░░░  ║ ║  ",
-  "  ╚══════╝     ╚══════════╝  ",
+  "   ╔═════════════════════════════════╗",
+  "   ║                                 ║",
+  "   ║  ███████╗ ██╗    ██╗ ███╗  ██╗  ║",
+  "   ║  ██╔═══██╗██║    ██║ ████╗ ██║  ║",
+  "   ║  ╚██████╔╝╚███╔███╔╝ ██║ ╚███║  ║",
+  "   ║                                 ║",
+  "   ║   PORTFOLIO                     ║",
+  "   ║                                 ║",
+  "   ║   ─────────────────             ║",
+  "   ║   Terminal Interface            ║",
+  "   ║                                 ║",
+  "   ╚═════════════════════════════════╝",
 ];
 
 // Right panel has 19 lines — center logo vertically with equal top/bottom padding
@@ -33,19 +38,25 @@ const LOGO_LINES = [
   ...Array(_bottomPad).fill(""),
 ];
 
-// Per-row RGB: cyan #00E5FF → purple #B347FF
-const GRADIENT_RGB: [number, number, number][] = [
-  [0,   229, 255],
-  [30,  196, 255],
-  [60,  163, 255],
-  [90,  130, 255],
-  [120,  97, 255],
-  [150,  74, 255],
-  [179,  71, 255],
+// Claude-style gradient: Orange #E67E22 → Pink #E84393 → Purple #9B59B6
+// Smooth transition across all logo lines
+const CLAUDE_GRADIENT_RGB: [number, number, number][] = [
+  [230, 126, 34],   // Orange
+  [232, 110, 50],   // Orange-Pink
+  [234, 94, 66],    // Pink-ish
+  [236, 78, 82],    // More Pink
+  [238, 67, 100],   // Pink
+  [220, 75, 120],   // Pink-Purple
+  [200, 83, 135],   // Purple-ish
+  [180, 91, 150],   // More Purple
+  [160, 95, 165],   // Purple
+  [155, 89, 182],   // Deep Purple
+  [155, 89, 182],   // Deep Purple
+  [155, 89, 182],   // Deep Purple
 ];
 
 function colorLogoLine(line: string, row: number): string {
-  const [r, g, b] = GRADIENT_RGB[Math.min(row, GRADIENT_RGB.length - 1)];
+  const [r, g, b] = CLAUDE_GRADIENT_RGB[Math.min(row, CLAUDE_GRADIENT_RGB.length - 1)];
   return chalk.rgb(r, g, b)(line);
 }
 
