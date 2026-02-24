@@ -1,8 +1,7 @@
 # Own-term 🚀
 
 <div align="center">
-
-![Own-term Banner](https://via.placeholder.com/800x200/00D9FF/FFFFFF?text=Own-term)
+<img width="1077" height="588" alt="Screenshot 2026-02-24 181907" src="https://github.com/user-attachments/assets/d021dfae-535a-4b62-8871-aff3a4990d8a" />
 
 **Create a beautiful, interactive terminal portfolio — installable via `npx` or `npm i -g`**
 
@@ -10,6 +9,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
 
 [Demo](#demo) • [Features](#features) • [Quick Start](#quick-start) • [Documentation](#documentation) • [Contributing](#contributing)
 
