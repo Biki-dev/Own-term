@@ -7,11 +7,10 @@
 **Create a beautiful, interactive terminal portfolio — installable via `npx` or `npm i -g`**
 
 [![npm version](https://badge.fury.io/js/own-term.svg)](https://www.npmjs.com/package/own-term)
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[Demo](#demo) • [Features](#features) • [Quick Start](#quick-start) • [Documentation](#documentation) • [Contributing](#contributing)
+[Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [Contributing](#-contributing)
 
 </div>
 
@@ -26,42 +25,34 @@ Not just a single person's portfolio — it's a complete framework that lets any
 
 - 🎨 **Beautiful by default** - Stunning themes, gradients, and ASCII art
 - 🔌 **Plugin system** - Extend with custom commands and features
-- 🎭 **Multiple themes** - Dark, light, and hacker themes built-in
+- 🎭 **Multiple themes** - 6 built-in themes (dark, light, hacker, neo, dracula, nordic)
+- 💻 **Dynamic prompts** - 5 configurable prompt styles (git, time, dashboard, minimal, cyberpunk)
 - ⚡ **Zero config** - Works out of the box, customize when you want
 - 📦 **Easy to use** - Run with `npx` or install globally
 - 🛠️ **Developer friendly** - TypeScript, well-documented, tested
 
 ---
 
-## 📺 Demo
-
-![Demo GIF](https://via.placeholder.com/600x400/1a1a1a/00FF00?text=Demo+Coming+Soon)
-
-Try it now:
-
-```bash
-npx own-term
-```
-
----
-
 ## ✨ Features
 
-### Core Features (MVP)
+### Core Features
 
-- ✅ Interactive shell with commands: `about`, `projects`, `skills`, `contact`, `resume`, `theme`
+- ✅ Interactive shell with commands: `about`, `projects`, `skills`, `contact`, `resume`, `theme`, `help`
 - ✅ Config file (`termfolio.config.ts`) for easy customization
-- ✅ Beautiful ASCII headers and boxed layouts
-- ✅ Color themes with gradient support
+- ✅ Beautiful ASCII logo with Claude-style gradient (orange → pink → purple)
+- ✅ 6 color themes with gradient support
+- ✅ 5 dynamic prompt styles (git-style, time-based, dashboard, minimal, cyberpunk)
+- ✅ Context-aware prompts (changes based on current command)
+- ✅ Animated boot sequence and welcome screen
 - ✅ Installable via npm / runnable via npx
 
 ### Advanced Features
 
 - 🔌 Plugin system for custom commands
-- 🎨 Theme system (colors/fonts/spacing)
-- 📊 Component library (Box, Table, Charts)
+- 🎨 Theme system with 6 built-in themes
+- 📊 Beautiful rendering components (tables, progress bars, cards)
 - 🧪 Full test coverage
-- 🚀 CI/CD pipeline
+- 🚀 CI/CD pipeline with GitHub Actions
 - 📚 Comprehensive documentation
 
 ---
@@ -89,9 +80,9 @@ own-term
 export default {
   name: "Your Name",
   title: "Your Title",
-  asciiLogo: "YOUR-NAME",
   about: "A brief description about yourself",
-  theme: "dark", // dark, light, or hacker
+  theme: "dark", // dark, light, hacker, neo, dracula, nordic
+  promptStyle: "dashboard", // git, time, dashboard, minimal, cyberpunk
   links: {
     github: "https://github.com/yourusername",
     linkedin: "https://linkedin.com/in/yourusername",
@@ -103,11 +94,14 @@ export default {
       desc: "Description of your project",
       repo: "https://github.com/yourusername/project",
       tags: ["javascript", "react"],
-      status: "active"
+      status: "active" // active, wip, archived
     }
   ],
   skills: {
-    languages: ["JavaScript", "TypeScript", "Python"],
+    languages: [
+      { name: "JavaScript", level: 90 }, // with progress bar
+      "Python" // or simple string
+    ],
     frameworks: ["React", "Node.js"],
     tools: ["Git", "Docker", "VS Code"]
   },
@@ -130,22 +124,15 @@ npx own-term --config=./termfolio.config.ts
 | Command | Description |
 |---------|------------|
 | `about` | Learn about the person |
-| `projects` | View projects |
-| `skills` | See skills and technologies |
+| `projects` | Browse projects (interactive picker) |
+| `skills` | See skills with progress bars |
 | `contact` | Get contact information |
 | `resume` | Open resume (if configured) |
-| `theme [name]` | Change theme |
-| `clear` | Clear the terminal |
+| `theme [name]` | Change theme (or see theme gallery) |
+| `clear` | Clear terminal and show welcome screen |
 | `help` | Show available commands |
 | `exit` | Exit the portfolio |
-
-### Configuration
-
-See [templates/](./templates/) for example configurations:
-
-- [Default](./templates/default/termfolio.config.ts) - Standard professional template
-- [Hacker](./templates/hacker/termfolio.config.ts) - Security researcher theme
-- [Minimal](./templates/minimal/termfolio.config.ts) - Bare essentials
+| `open [service]` | Quick open links (e.g., `open github`) |
 
 ### Themes
 
@@ -154,8 +141,65 @@ Built-in themes:
 - **dark** (default) - Modern dark theme with cyan/purple accents
 - **light** - Clean light theme
 - **hacker** - Matrix-style green terminal
+- **neo** - Neon pink & cyan
+- **dracula** - Classic Dracula palette
+- **nordic** - Muted Nordic tones
 
-### Plugin Development
+Change theme in config:
+```typescript
+theme: "dracula"
+```
+
+Or interactively:
+```bash
+theme dracula
+```
+
+### Prompt Styles
+
+Choose from 5 dynamic prompt styles:
+
+1. **git** - Git-style: `user@termfolio ~/project (context) ❯`
+2. **time** - Time-based: `[14:23] 📧 project:context ▶`
+3. **dashboard** (default) - Full info with time, context, counter
+4. **minimal** - Zsh-style: `◆ ~/project ➜`
+5. **cyberpunk** - Hacker aesthetic: `█ root@project [context] $`
+
+Configure in `termfolio.config.ts`:
+```typescript
+promptStyle: "time"
+```
+
+Prompts are **context-aware** and change based on your current command!
+
+### Skills Configuration
+
+Two formats supported:
+
+```typescript
+skills: {
+  // With progress bars (0-100)
+  languages: [
+    { name: "TypeScript", level: 92 },
+    { name: "JavaScript", level: 95 }
+  ],
+  
+  // Simple pills
+  tools: ["Git", "Docker", "VS Code"]
+}
+```
+
+### Example Configurations
+
+See [templates/](./templates/) for complete examples:
+
+- [Default](./templates/default/termfolio.config.ts) - Standard professional template
+- [Hacker](./templates/hacker/termfolio.config.ts) - Security researcher theme
+- [Minimal](./templates/minimal/termfolio.config.ts) - Bare essentials
+
+---
+
+## 🔌 Plugin Development
 
 Create custom plugins to extend functionality:
 
@@ -166,8 +210,24 @@ export default createPlugin("my-plugin", "1.0.0", (api) => {
   api.registerCommand("custom", "My custom command", async (args) => {
     api.render.header("Custom Command");
     api.render.text("Hello from my plugin!");
+    
+    // Access config
+    const config = api.getConfig();
+    api.render.info(`User: ${config.name}`);
+    
+    // Use theme colors
+    api.render.success("Command executed!");
   });
 });
+```
+
+Add plugins to your config:
+
+```typescript
+export default {
+  // ... other config
+  plugins: ["@username/my-plugin-package"]
+};
 ```
 
 ---
@@ -200,6 +260,9 @@ npm test
 
 # Lint
 npm run lint
+
+# Format code
+npm run format
 ```
 
 ### Project Structure
@@ -210,11 +273,20 @@ own-term/
 │   ├── cli.ts              # Entry point
 │   ├── config.ts           # Config loader
 │   ├── types.ts            # TypeScript definitions
-│   ├── shell/              # Shell engine & router
-│   ├── render/             # Rendering components
-│   ├── commands/           # Core commands
-│   ├── plugins/            # Plugin system
-│   └── themes/             # Theme definitions
+│   ├── shell/
+│   │   ├── engine.ts       # Shell engine with 5 prompt styles
+│   │   ├── router.ts       # Command router
+│   │   └── welcome.ts      # Welcome screen with gradient logo
+│   ├── render/
+│   │   ├── renderer.ts     # Rendering components
+│   │   └── effects.ts      # Typewriter effects
+│   ├── commands/
+│   │   └── index.ts        # Core commands
+│   ├── plugins/
+│   │   ├── loader.ts       # Plugin loading system
+│   │   └── plugin_api.ts   # Plugin API
+│   └── themes/
+│       └── default.ts      # 6 theme definitions
 ├── templates/              # Starter templates
 ├── tests/                  # Test files
 └── bin/                    # Compiled output
@@ -228,12 +300,23 @@ We love contributions! Please read our [Contributing Guide](CONTRIBUTING.md) to 
 
 ### Ways to Contribute
 
-- 🐛 Report bugs
+- 🐛 Report bugs via [Issues](https://github.com/Biki-dev/own-term/issues)
 - 💡 Suggest features
 - 📝 Improve documentation
 - 🎨 Create new themes
 - 🔌 Build plugins
 - ✅ Write tests
+- 🌍 Add translations
+
+### Development Workflow
+
+1. Fork the repo
+2. Create a feature branch: `git checkout -b feature/my-feature`
+3. Make your changes
+4. Run tests: `npm test`
+5. Run linter: `npm run lint`
+6. Commit with conventional commits: `feat(prompt): add new style`
+7. Push and create a Pull Request
 
 ---
 
@@ -249,12 +332,21 @@ See [LICENSE](LICENSE) for details.
 
 Using Own-term for your portfolio? Add it here!
 
-- [Your Portfolio](https://github.com/yourusername/portfolio) - Your Name
+- Submit a PR to add your portfolio to this list
+
+---
+
+## 🙏 Acknowledgments
+
+- Inspired by terminal-based portfolio projects
+- Built with [chalk](https://github.com/chalk/chalk), [inquirer](https://github.com/SBoudrias/Inquirer.js), [boxen](https://github.com/sindresorhus/boxen)
+- Logo gradient inspired by [Claude.ai](https://claude.ai)
+
 ---
 
 <div align="center">
 
-**Made with ❤️ by developers, for developers**
+**Made for developers**
 
 [⬆ Back to top](#own-term-)
 
